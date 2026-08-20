@@ -2,7 +2,6 @@
 # Movie Manager - A Kotlin Console Application
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9+-7F52FF?style=flat&logo=kotlin)
-![License](https://img.shields.io/badge/License-MIT-green)
 
 A feature-rich console-based movie management system built with Kotlin, featuring user authentication, CRUD operations, and interactive menu-driven interface.
 
