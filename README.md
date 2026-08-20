@@ -211,16 +211,11 @@ Contributions are welcome! Here's how you can help:
 
 ### Areas for Improvement
 - [ ] Add database storage instead of file system
-- [ ] Implement movie rating system
 - [ ] Add categories/genres
 - [ ] Create GUI interface
 - [ ] Add export/import functionality
 - [ ] Implement search by director
 - [ ] Add release year tracking
-
-## 📄 License
-
-This project is open source and available under the MIT License.
 
 ## 📞 Contact
 
