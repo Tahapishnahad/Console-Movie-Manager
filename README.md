@@ -217,6 +217,9 @@ Contributions are welcome! Here's how you can help:
 - [ ] Implement search by director
 - [ ] Add release year tracking
 
+### MIT License
+This project is open source and available under the MIT License.
+
 ## 📞 Contact
 
 **Tahapishnahad**  
@@ -227,3 +230,4 @@ Contributions are welcome! Here's how you can help:
 ⭐ If you find this project useful, please consider giving it a star!
 
 Wrote by help of DeepseekAI © 2026
+Taha Pishnahad. All rights reserved.
