@@ -1,9 +1,31 @@
-# Console-Movie-Manager
-# Movie Manager - A Kotlin Console Application
+# 🎬 Movie Manager v1.1 - Kotlin Console Application
 
 ![Kotlin](https://img.shields.io/badge/Kotlin-1.9+-7F52FF?style=flat&logo=kotlin)
+![Version](https://img.shields.io/badge/version-1.1-brightgreen)
+![License](https://img.shields.io/badge/License-MIT-green)
 
-A feature-rich console-based movie management system built with Kotlin, featuring user authentication, CRUD operations, and interactive menu-driven interface.
+A feature-rich console-based movie management system built with Kotlin, featuring user authentication, CRUD operations, and an interactive menu-driven interface.
+
+## 🆕 What's New in Version 1.1
+
+Version 1.1 brings a complete architectural overhaul with improved separation of concerns, better security, and enhanced code maintainability:
+
+### 🏗️ **New Modular Architecture**
+- **`AuthService.kt`** - Dedicated authentication and user management logic
+- **`MovieService.kt`** - Centralized movie CRUD operations and business logic
+- **`ConsoleManager.kt`** - Unified console I/O and menu handling
+- **`Encryption.kt`** - Basic password protection and data security
+- **`Utility.kt`** - Shared utility functions and extensions
+
+### 🔐 **Enhanced Security**
+- Basic password encryption for stored credentials
+- Improved password strength validation
+- Better session management with clear logout
+
+### 📁 **Better Code Organization**
+- Clear separation of concerns between services
+- More maintainable and testable codebase
+- Simplified main application loop
 
 ## 🎬 Features
 
@@ -38,8 +60,8 @@ A feature-rich console-based movie management system built with Kotlin, featurin
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/Tahapishnahad/movie-manager.git
-   cd movie-manager
+   git clone https://github.com/Tahapishnahad/Console-Movie-Manager.git
+   cd Console-Movie-Manager
    ```
 
 2. **Compile the project**
@@ -73,6 +95,7 @@ A feature-rich console-based movie management system built with Kotlin, featurin
 7. Change Password 🔑 - Update user password
 8. Logout 🚶🏻‍♂️‍➡️   - End current session
 9. Exit 👋🏻         - Close application
+10. About         - Show project info
 ```
 
 ### Movie Data Structure
@@ -85,31 +108,35 @@ A feature-rich console-based movie management system built with Kotlin, featurin
 
 ## 🛠️ Technical Architecture
 
-### Core Components
+### Core Components (v1.1)
 
 | File | Responsibility |
 |------|---------------|
-| `MovieManager-Main.kt` | Application entry point and main loop |
-| `MovieManager-MainObject.kt` | Singleton object with shared utilities and menu system |
-| `MovieManager-MovieManager.kt` | Movie CRUD operations and business logic |
-| `MovieManager-RegisterAndLogin.kt` | User authentication and password management |
+| `Main.kt` | Application entry point and main loop |
+| `MainObject.kt` | Singleton object with shared utilities |
+| `AuthService.kt` | **NEW** Authentication and user management |
+| `MovieService.kt` | **NEW** Movie CRUD operations |
+| `ConsoleManager.kt` | **NEW** Console I/O and menu handling |
+| `Encryption.kt` | **NEW** Password encryption and security |
+| `Utility.kt` | **NEW** Shared utility functions |
 
 ### Key Classes & Objects
 
 - **`Movie`** (Data Class) - Movie entity with title, director, rating, and ID
 - **`User`** (Data Class) - User credentials model
-- **`MovieManager`** - Business logic for movie operations
-- **`RegisterAndLogin`** - User authentication handling
-- **`MovieExtension`** - Static utility methods for movie operations
-- **`LoginAndRegisterValidation`** - Validation logic for authentication
+- **`AuthService`** - Handles registration, login, and password changes
+- **`MovieService`** - Business logic for all movie operations
+- **`ConsoleManager`** - Manages all console input/output
+- **`Encryption`** - Provides basic password protection
 
 ### Security Features
 - Password strength validation (LOW/MEDIUM/HIGH)
+- Basic password encryption for storage
 - Credential persistence with file-based storage
 - Session management with logout functionality
 - Input sanitization and validation
 
-## 🔄 Data Flow
+## 🔄 Data Flow (v1.1)
 
 ```
 ┌─────────────┐
@@ -120,15 +147,16 @@ A feature-rich console-based movie management system built with Kotlin, featurin
 │  MainObject │ (Singleton)
 └──────┬──────┘
        │
-       ├───────────────┐
-       │               │
-┌──────▼──────┐ ┌──────▼──────┐
-│ MovieManager│ │RegisterLogin│
-└──────┬──────┘ └──────┬──────┘
-       │               │
-┌──────▼──────┐ ┌──────▼──────┐
-│  Extension  │ │ Validation  │
-└─────────────┘ └─────────────┘
+       ├───────────────┬───────────────┐
+       │               │               │
+┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐
+│ AuthService │ │MovieService │ │ConsoleManager│
+└──────┬──────┘ └──────┬──────┘ └──────┬──────┘
+       │               │               │
+┌──────▼──────┐ ┌──────▼──────┐ ┌──────▼──────┐
+│ Encryption  │ │  Utility    │ │   Input/    │
+│             │ │             │ │   Output    │
+└─────────────┘ └─────────────┘ └─────────────┘
 ```
 
 ## 🧪 Error Handling
@@ -141,7 +169,7 @@ The application includes comprehensive error handling:
 
 ## 💻 Code Examples
 
-### Adding a Movie
+### Adding a Movie (v1.1)
 ```kotlin
 fun addMovie() {
     println("--== Add Movie ==--")
@@ -166,38 +194,45 @@ fun addMovie() {
 }
 ```
 
-### Password Validation
+### Password Encryption (v1.1)
 ```kotlin
-fun checkPasswordStrength(password: String): PasswordStrength? {
-    if (password.isBlank()) return null
+// Encryption.kt
+class Encryption {
+    fun encrypt(password: String): String {
+        // Basic encryption for password storage
+        return password.reversed() // Simple example
+    }
     
-    val hasLowercase = password.any { it.isLowerCase() }
-    val hasUppercase = password.any { it.isUpperCase() }
-    val hasDigit = password.any { it.isDigit() }
-    val hasSpecial = password.any { !it.isLetterOrDigit() }
-    
-    val types = listOf(hasLowercase, hasUppercase, hasDigit, hasSpecial).count { it }
-    
-    return when {
-        password.length < 8 -> PasswordStrength.LOW
-        password.length >= 13 && types >= 3 -> PasswordStrength.HIGH
-        types >= 2 -> PasswordStrength.MEDIUM
-        else -> PasswordStrength.LOW
+    fun decrypt(encrypted: String): String {
+        return encrypted.reversed()
     }
 }
 ```
 
-## 📁 Project Structure
+## 📁 Project Structure (v1.1)
 
 ```
-movie-manager/
-├── MovieManager-Main.kt              # Application entry point
-├── MovieManager-MainObject.kt        # Singleton and utilities
-├── MovieManager-MovieManager.kt      # Movie operations
-├── MovieManager-RegisterAndLogin.kt  # Authentication
-├── userdata.txt                      # User credentials storage
-└── README.md                         # Documentation
+Console-Movie-Manager/
+├── Main.kt                    # Application entry point
+├── MainObject.kt              # Singleton and utilities
+├── AuthService.kt             # **NEW** Authentication logic
+├── MovieService.kt            # **NEW** Movie operations
+├── ConsoleManager.kt          # **NEW** Console management
+├── Encryption.kt              # **NEW** Security utilities
+├── Utility.kt                 # **NEW** Shared functions
+├── userdata.txt               # User credentials storage
+├── LICENSE                    # MIT License
+└── README.md                  # Documentation
 ```
+
+## 🔄 Migration from v1.0 to v1.1
+
+If you were using version 1.0, here's what changed:
+1. **File Structure** - Files are now organized by responsibility
+2. **Services** - Logic moved to dedicated service classes
+3. **Encryption** - Passwords are now encrypted before storage
+4. **Input/Output** - Console operations centralized in ConsoleManager
+5. **Main Loop** - Simplified and more readable
 
 ## 🤝 Contributing
 
@@ -209,15 +244,16 @@ Contributions are welcome! Here's how you can help:
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
 
-### Areas for Improvement
+### Future Plans
 - [ ] Add database storage instead of file system
-- [ ] Add categories/genres
+- [ ] Add categories/genres for movies
 - [ ] Create GUI interface
 - [ ] Add export/import functionality
 - [ ] Implement search by director
 - [ ] Add release year tracking
 
-### MIT License
+## 📄 License
+
 This project is open source and available under the MIT License.
 
 ## 📞 Contact
@@ -229,5 +265,6 @@ This project is open source and available under the MIT License.
 
 ⭐ If you find this project useful, please consider giving it a star!
 
-Wrote by help of DeepseekAI © 2026
-Taha Pishnahad. All rights reserved.
+---
+
+**Wrote with help of DeepseekAI** © 2026 Taha Pishnahad. All rights reserved.
