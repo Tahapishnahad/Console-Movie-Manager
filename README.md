@@ -247,10 +247,9 @@ Contributions are welcome! Here's how you can help:
 ### Future Plans
 - [ ] Add database storage instead of file system
 - [ ] Add categories/genres for movies
-- [ ] Create GUI interface
-- [ ] Add export/import functionality
 - [ ] Implement search by director
 - [ ] Add release year tracking
+- [ ] Adding new features 
 
 ## 📄 License
 
